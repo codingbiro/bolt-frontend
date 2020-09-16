@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import GraphqlErrorCodes from "./shared/graphqlErrors";
 // import { useStores } from "./stores";
 
-const apiRoot = "http://localhost:6000";
+const apiRoot = "http://localhost:3332/";
 
 const Apollo: React.FC = ({ children }) => {
   const history = useHistory();

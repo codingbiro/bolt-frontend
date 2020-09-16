@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,10 @@ import {
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikTextField from "../../components/FormikTextField";
+import { useMutation } from "@apollo/client";
+import { Register, RegisterVariables } from "../../graphql/types";
+import { LOGIN } from "../../graphql/graphql";
+import { login } from "./api";
 // import useHideNavigation from "../../components/useHideNavigation";
 
 const useStyles = makeStyles(() => ({
@@ -33,38 +37,35 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface Form {
-  firstName: string;
-  lastName: string;
   email: string;
   password: string;
 }
 
 const validation = Yup.object().shape<Form>({
-  firstName: Yup.string().required("Please fill out this field."),
-  lastName: Yup.string().required("Please fill out this field."),
   email: Yup.string().required("Please fill out this field."),
   password: Yup.string().required("Please fill out this field."),
 });
 
 const Default: React.FC = () => {
   const classes = useStyles();
+  const [uId, setId] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [mutateRegister] = useMutation<Register, RegisterVariables>(LOGIN);
+
   // useHideNavigation();
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>Signup</h1>
+      <h1 className={classes.red}>{uId ? uId : "Login"}</h1>
       <Formik<Form>
         initialValues={{
-          firstName: "",
-          lastName: "",
           email: "",
           password: "",
         }}
         validationSchema={validation}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 500);
+        onSubmit={async (values, { setSubmitting }) => {
+          const { id } = await login(values.email, values.password);
+          setId(id);
+          setSubmitting(false);
         }}
       >
         {({ handleSubmit, isSubmitting }) => (
@@ -73,25 +74,6 @@ const Default: React.FC = () => {
             onSubmit={(e) => handleSubmit(e)}
             className={classes.form}
           >
-            <FormControl margin="normal" required fullWidth>
-              <FormikTextField
-                id="firstName"
-                name="firstName"
-                type="text"
-                placeholder="First Name"
-                autoFocus
-                required
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <FormikTextField
-                id="lastName"
-                name="lastName"
-                type="text"
-                placeholder="Last Name"
-                required
-              />
-            </FormControl>
             <FormControl margin="normal" required fullWidth>
               <FormikTextField
                 id="email"
