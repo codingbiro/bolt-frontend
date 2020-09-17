@@ -31,6 +31,16 @@ function post<T>(url: string, postData: Record<string, unknown>): Promise<T> {
   });
 }
 
+function get<T>(url: string): Promise<T> {
+  return request(`${apiRoot}${url}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    credentials: "include",
+  });
+}
+
 export const login = (email: string, password: string) => {
   const postData = {
     email,
@@ -38,3 +48,9 @@ export const login = (email: string, password: string) => {
   };
   return post<{ id: string; email: string }>("auth/login", postData);
 };
+
+export const whoami = () => {
+  return get<{ email: string }>("auth/whoami");
+};
+
+export const logout = () => post("auth/logout", {});

@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/client";
 import { Register, RegisterVariables } from "../../graphql/types";
 import { LOGIN } from "../../graphql/graphql";
 import { login } from "./api";
+import { AuthStore, withStores } from "../../stores";
 // import useHideNavigation from "../../components/useHideNavigation";
 
 const useStyles = makeStyles(() => ({
@@ -46,7 +47,7 @@ const validation = Yup.object().shape<Form>({
   password: Yup.string().required("Please fill out this field."),
 });
 
-const Default: React.FC = () => {
+const Auth: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   const classes = useStyles();
   const [uId, setId] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -55,7 +56,7 @@ const Default: React.FC = () => {
   // useHideNavigation();
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>{uId ? uId : "Login"}</h1>
+      <h1 className={classes.red}>{uId ? uId : "Coca Cola"}</h1>
       <Formik<Form>
         initialValues={{
           email: "",
@@ -63,7 +64,8 @@ const Default: React.FC = () => {
         }}
         validationSchema={validation}
         onSubmit={async (values, { setSubmitting }) => {
-          const { id } = await login(values.email, values.password);
+          const { id, email } = await login(values.email, values.password);
+          authStore.login({ email });
           setId(id);
           setSubmitting(false);
         }}
@@ -101,7 +103,7 @@ const Default: React.FC = () => {
                 color="primary"
                 className={classes.submit}
               >
-                Sign up
+                Login
                 {isSubmitting && (
                   <Box display="flex" alignItems="center" pr={1}>
                     <CircularProgress
@@ -121,4 +123,4 @@ const Default: React.FC = () => {
   );
 };
 
-export default Default;
+export default withStores("authStore")(Auth);

@@ -1,10 +1,12 @@
 import React from "react";
 import { MobXProviderContext } from "mobx-react";
 import { ContextStore } from "./ContextStore";
+import AuthStore from "./AuthStore";
 
 export default function createStores() {
   return {
     contextStore: new ContextStore(),
+    authStore: new AuthStore(),
   };
 }
 
