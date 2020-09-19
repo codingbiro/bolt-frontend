@@ -1,8 +1,7 @@
 import { useObserver } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { Typography, CircularProgress, makeStyles } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
-import cn from "classnames";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import { useApolloClient } from "@apollo/client";
 import { whoami } from "../Auth/api";
 import { AuthStore, useStores, withStores } from "../../stores";
