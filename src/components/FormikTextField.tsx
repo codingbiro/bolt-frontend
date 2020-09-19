@@ -51,14 +51,14 @@ const useStyles = makeStyles(() => ({
     height: "24px",
     width: "100%",
     minWidth: "40px",
-    borderRadius: "8px",
+    borderRadius: "16px",
     "& .MuiInputBase-root, &.MuiInputBase-root": {
-      height: "24px",
+      height: "40px",
       "& input": {
         paddingTop: 0,
         paddingBottom: 0,
-        height: "24px",
-        borderRadius: "8px",
+        height: "40px",
+        borderRadius: "16px",
         border: 0,
         fontSize: "14",
 
@@ -67,7 +67,7 @@ const useStyles = makeStyles(() => ({
         },
       },
       "& .MuiOutlinedInput-notchedOutline": {
-        height: "24px",
+        height: "40px",
         top: 0,
         "& legend": {
           display: "none",
