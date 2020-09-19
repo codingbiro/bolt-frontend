@@ -1,18 +1,19 @@
 import React from "react";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router";
 import ResetPassword from "./ResetPassword";
 import ChangePassword from "./ChangePassword";
 import Login from "./Login";
 import Register from "./Register";
+import urls from "../../const/urls";
 
-const Auth: React.FC<RouteComponentProps> = ({ match }) => {
+const Auth: React.FC = () => {
   return (
     <Switch>
-      <Route path={`${match.path}/login`} component={Login} />
-      <Route path={`${match.path}/register`} component={Register} />
-      <Route path={`${match.path}/resetpassword`} component={ResetPassword} />
-      <Route path={`${match.path}/changepassword`} component={ChangePassword} />
-      <Redirect to="/" />
+      <Route path={urls.auth.login} component={Login} />
+      <Route path={urls.auth.register} component={Register} />
+      <Route path={urls.auth.resetpassword} component={ResetPassword} />
+      <Route path={urls.auth.changepassword} component={ChangePassword} />
+      <Redirect to={urls.home} />
     </Switch>
   );
 };

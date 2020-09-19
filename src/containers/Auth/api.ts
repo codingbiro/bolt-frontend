@@ -50,7 +50,7 @@ export const login = (email: string, password: string) => {
 };
 
 export const whoami = () => {
-  return get<{ email: string }>("auth/whoami");
+  return get<{ id: string; email: string }>("auth/whoami");
 };
 
 export const logout = () => post("auth/logout", {});

@@ -3,7 +3,10 @@ import { observable, action, decorate } from "mobx";
 import { logout } from "../containers/Auth/api";
 
 export interface User {
+  id: string;
   email: string;
+  name: string;
+  isAdmin: boolean;
 }
 
 export default class AuthStore {

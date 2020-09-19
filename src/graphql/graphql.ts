@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
 
-// eslint-disable-next-line import/prefer-default-export
 export const PRODUCTS = gql`
   query Products($search: String) {
     products(search: $search) {
@@ -16,6 +15,16 @@ export const ADD_PRODUCT = gql`
   mutation AddProduct($input: ProductCreateInput!) {
     addProduct(input: $input) {
       id
+    }
+  }
+`;
+
+export const USER = gql`
+  query User($id: ID!) {
+    user(id: $id) {
+      id
+      name
+      isAdmin
     }
   }
 `;

@@ -1,16 +1,18 @@
 import React from "react";
-import { Switch } from "react-router";
-import { Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router";
 import Auth from "./containers/Auth";
 import Welcome from "./components/Welcome";
-import ProductRoutes from "./containers/Product/ProductRoutes";
+import ProductRoutes from "./containers/Shop/ProductRoutes";
+import AdminRoutes from "./containers/Admin/AdminRoutes";
+import urls from "./const/urls";
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/auth" component={Auth} />
-    <Route path="/products" component={ProductRoutes} />
-    <Route path="/" component={Welcome} />
-    <Redirect to="/" />
+    <Route path={urls.auth.root} component={Auth} />
+    <Route path={urls.shop.root} component={ProductRoutes} />
+    <Route path={urls.admin.dashboard} component={AdminRoutes} />
+    <Route path={urls.home} component={Welcome} />
+    <Redirect to={urls.home} />
   </Switch>
 );
 

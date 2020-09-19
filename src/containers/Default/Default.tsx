@@ -6,6 +6,9 @@ import cn from "classnames";
 import { useApolloClient } from "@apollo/client";
 import { whoami } from "../Auth/api";
 import { AuthStore, useStores, withStores } from "../../stores";
+import Navbar from "./Navbar";
+import { USER } from "../../graphql/graphql";
+import { User, UserVariables } from "../../graphql/types";
 
 const useStyles = makeStyles(() => ({
   margin: {
@@ -41,19 +44,27 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
   children,
 }) => {
   const classes = useStyles();
-  const client = useApolloClient();
   const history = useHistory();
   const { contextStore } = useStores();
   const isNavigationHidden = useObserver(() => contextStore.isNavigationHidden);
   const [loading, setLoading] = useState(true);
-
+  const client = useApolloClient();
   useEffect(() => {
     async function checkLoginStatus() {
       try {
-        const { email } = await whoami();
-        authStore.login({
-          email,
+        const { id, email } = await whoami();
+        const { data } = await client.query<User, UserVariables>({
+          query: USER,
+          variables: { id },
         });
+        if (data) {
+          authStore.login({
+            id,
+            email,
+            name: data.user.name,
+            isAdmin: data.user.isAdmin,
+          });
+        }
       } catch (e) {
         // User do not have an authenticated session
       } finally {
@@ -61,7 +72,7 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
       }
     }
     checkLoginStatus().then();
-  }, [authStore]);
+  }, [authStore, client]);
 
   const user = authStore?.user;
 
@@ -75,81 +86,15 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
   return (
     <div className="App">
       <div className={classes.line} />
-      {!isNavigationHidden &&
-        (user ? (
-          <header className={classes.header}>
-            <div>
-              <Link to="/" className={cn(classes.margin, classes.inline)}>
-                <Typography>Home</Typography>
-              </Link>
-              <Link
-                to="/products"
-                className={cn(classes.margin, classes.inline)}
-              >
-                <Typography>Products</Typography>
-              </Link>
-              <Link
-                to="/products/add"
-                className={cn(classes.margin, classes.inline)}
-              >
-                <Typography>Add Products</Typography>
-              </Link>
-              <div
-                onClick={() => {
-                  authStore.logout(client);
-                  history.push("/");
-                }}
-                className={cn(classes.pointer, classes.inline)}
-                role="button"
-                tabIndex={0}
-                onKeyPress={() => {
-                  authStore.logout(client);
-                  history.push("/");
-                }}
-              >
-                <Typography>Logout</Typography>
-              </div>
-            </div>
-            <div>
-              <Typography>
-                Hello,
-                {user.email}
-              </Typography>
-            </div>
-          </header>
-        ) : (
-          <header className={classes.header}>
-            <div>
-              <Link to="/" className={cn(classes.margin, classes.inline)}>
-                <Typography>Home</Typography>
-              </Link>
-              <Link
-                to="/products"
-                className={cn(classes.margin, classes.inline)}
-              >
-                <Typography>Products</Typography>
-              </Link>
-              <Link
-                to="/auth/login"
-                className={cn(classes.margin, classes.inline)}
-              >
-                <Typography>Login</Typography>
-              </Link>
-              <Link
-                to="/auth/resetpassword"
-                className={cn(classes.margin, classes.inline)}
-              >
-                <Typography>Reset Password</Typography>
-              </Link>
-              <Link to="/auth/register" className={classes.inline}>
-                <Typography>Register</Typography>
-              </Link>
-            </div>
-            <div>
-              <Typography>Hello, Stranger</Typography>
-            </div>
-          </header>
-        ))}
+      {!isNavigationHidden && (
+        <Navbar
+          user={user}
+          Logout={() => {
+            authStore.logout(client);
+            history.push("/");
+          }}
+        />
+      )}
       <div>{children}</div>
     </div>
   );

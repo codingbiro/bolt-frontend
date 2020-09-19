@@ -10,9 +10,12 @@ import {
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
+import { useApolloClient } from "@apollo/client";
 import FormikTextField from "../../components/FormikTextField";
 import { login } from "./api";
 import { AuthStore, withStores } from "../../stores";
+import { User, UserVariables } from "../../graphql/types";
+import { USER } from "../../graphql/graphql";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -53,6 +56,7 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   const classes = useStyles();
   const history = useHistory();
   const [error, setError] = useState(false);
+  const client = useApolloClient();
   return (
     <div className={classes.authContainer}>
       <h1 className={classes.red}>Coca Cola</h1>
@@ -65,8 +69,18 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
         onSubmit={async (values, { setSubmitting }) => {
           setError(false);
           try {
-            const { email } = await login(values.email, values.password);
-            authStore.login({ email });
+            const { id, email } = await login(values.email, values.password);
+            const { data } = await client.query<User, UserVariables>({
+              query: USER,
+              variables: { id },
+            });
+            if (data)
+              authStore.login({
+                id,
+                email,
+                name: data.user.name,
+                isAdmin: data.user.isAdmin,
+              });
             setSubmitting(false);
             history.push("/");
           } catch (e) {
