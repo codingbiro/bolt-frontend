@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   CircularProgress,
   FormControl,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikTextField from "../../components/FormikTextField";
 import { login } from "./api";
 import { AuthStore, withStores } from "../../stores";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -31,6 +33,10 @@ const useStyles = makeStyles(() => ({
   whiteColor: {
     color: "#fff !important",
   },
+  error: {
+    color: "red",
+    padding: "24px",
+  },
 }));
 
 interface Form {
@@ -45,6 +51,8 @@ const validation = Yup.object().shape<Form>({
 
 const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const [error, setError] = useState(false);
   return (
     <div className={classes.authContainer}>
       <h1 className={classes.red}>{"Coca Cola"}</h1>
@@ -55,9 +63,16 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
         }}
         validationSchema={validation}
         onSubmit={async (values, { setSubmitting }) => {
-          const { email } = await login(values.email, values.password);
-          authStore.login({ email });
-          setSubmitting(false);
+          setError(false);
+          try {
+            const { email } = await login(values.email, values.password);
+            authStore.login({ email });
+            setSubmitting(false);
+            history.push("/");
+          } catch (e) {
+            setSubmitting(false);
+            setError(true);
+          }
         }}
       >
         {({ handleSubmit, isSubmitting }) => (
@@ -109,6 +124,11 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
           </Form>
         )}
       </Formik>
+      {error && (
+        <Box>
+          <Typography className={classes.error}>Wrong credentials.</Typography>
+        </Box>
+      )}
     </div>
   );
 };

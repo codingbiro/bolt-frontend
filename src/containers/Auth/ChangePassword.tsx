@@ -14,6 +14,7 @@ import { changepassword } from "./api";
 import useHideNavigation from "../../components/useHideNavigation";
 import { parse as queryStringParse } from "query-string";
 import { useHistory, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -37,6 +38,9 @@ const useStyles = makeStyles(() => ({
   error: {
     color: "red",
     padding: "24px",
+    "& a": {
+      color: "black",
+    },
   },
 }));
 
@@ -120,6 +124,9 @@ const ChangePassword: React.FC = () => {
       {error && (
         <Box className={classes.error}>
           <Typography>Invalid or expired token.</Typography>
+          <Link to="/">
+            <Typography>Go back home.</Typography>
+          </Link>
         </Box>
       )}
     </div>

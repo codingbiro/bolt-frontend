@@ -48,7 +48,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   field: {
-    height: "24px",
+    height: "40px",
     width: "100%",
     minWidth: "40px",
     borderRadius: "16px",
