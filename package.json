@@ -33,6 +33,7 @@
     "graphql:codegen": "apollo client:codegen ./src/graphql/types.ts --target=typescript --outputFlat",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint --fix ./ --ext .js,.jsx,.ts,.tsx",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/yup": "^0.29.7",
+    "@typescript-eslint/parser": "^4.1.1",
     "apollo": "^2.30.3",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.2.0",
