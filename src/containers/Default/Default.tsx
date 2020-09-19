@@ -8,8 +8,8 @@ import { whoami } from "../Auth/api";
 import { useApolloClient } from "@apollo/client";
 
 const useStyles = makeStyles(() => ({
-  padding: {
-    paddingRight: "24px",
+  margin: {
+    marginRight: "24px",
   },
   inline: {
     display: "inline-block",
@@ -79,7 +79,7 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
         (user ? (
           <header className={classes.header}>
             <div>
-              <Link to="/" className={cn(classes.padding, classes.inline)}>
+              <Link to="/" className={cn(classes.margin, classes.inline)}>
                 <Typography>Home</Typography>
               </Link>
               <div
@@ -99,11 +99,23 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
         ) : (
           <header className={classes.header}>
             <div>
-              <Link to="/" className={cn(classes.padding, classes.inline)}>
+              <Link to="/" className={cn(classes.margin, classes.inline)}>
                 <Typography>Home</Typography>
               </Link>
-              <Link to="/auth" className={classes.inline}>
+              <Link
+                to="/auth/login"
+                className={cn(classes.margin, classes.inline)}
+              >
                 <Typography>Login</Typography>
+              </Link>
+              <Link
+                to="/auth/resetpassword"
+                className={cn(classes.margin, classes.inline)}
+              >
+                <Typography>Reset Password</Typography>
+              </Link>
+              <Link to="/auth/register" className={classes.inline}>
+                <Typography>Register</Typography>
               </Link>
             </div>
             <div>

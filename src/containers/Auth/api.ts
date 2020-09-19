@@ -54,3 +54,28 @@ export const whoami = () => {
 };
 
 export const logout = () => post("auth/logout", {});
+
+export const register = (email: string, name: string, password: string) => {
+  const postData = {
+    email,
+    name,
+    password,
+  };
+  return post<{ id: string }>("auth/register", postData);
+};
+
+export const resetpassword = (email: string) => {
+  const postData = {
+    email,
+  };
+  return post("auth/resetpassword", postData);
+};
+
+export const changepassword = (token: string, password: string) => {
+  const postData = {
+    token,
+    password,
+  };
+  console.log(postData);
+  return post("auth/changepassword", postData);
+};

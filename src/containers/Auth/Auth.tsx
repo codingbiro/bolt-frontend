@@ -1,126 +1,22 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  makeStyles,
-} from "@material-ui/core";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import FormikTextField from "../../components/FormikTextField";
-import { useMutation } from "@apollo/client";
-import { Register, RegisterVariables } from "../../graphql/types";
-import { LOGIN } from "../../graphql/graphql";
-import { login } from "./api";
-import { AuthStore, withStores } from "../../stores";
-// import useHideNavigation from "../../components/useHideNavigation";
+import React from "react";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
+import ResetPassword from "./ResetPassword";
+import ChangePassword from "./ChangePassword";
+import Login from "./Login";
+import Register from "./Register";
 
-const useStyles = makeStyles(() => ({
-  red: {
-    color: "red",
-  },
-  form: {
-    width: "100%",
-    marginTop: "24px",
-  },
-  submit: {
-    marginTop: "24px",
-  },
-  authContainer: {
-    maxWidth: "600px",
-    width: "50%",
-    margin: "auto",
-  },
-  whiteColor: {
-    color: "#fff !important",
-  },
-}));
+const Auth: React.FC<RouteComponentProps> = ({ match }) => {
+  // const [mutateRegister] = useMutation<Register, RegisterVariables>(LOGIN);
 
-interface Form {
-  email: string;
-  password: string;
-}
-
-const validation = Yup.object().shape<Form>({
-  email: Yup.string().required("Please fill out this field."),
-  password: Yup.string().required("Please fill out this field."),
-});
-
-const Auth: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
-  const classes = useStyles();
-  const [uId, setId] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [mutateRegister] = useMutation<Register, RegisterVariables>(LOGIN);
-
-  // useHideNavigation();
   return (
-    <div className={classes.authContainer}>
-      <h1 className={classes.red}>{uId ? uId : "Coca Cola"}</h1>
-      <Formik<Form>
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={validation}
-        onSubmit={async (values, { setSubmitting }) => {
-          const { id, email } = await login(values.email, values.password);
-          authStore.login({ email });
-          setId(id);
-          setSubmitting(false);
-        }}
-      >
-        {({ handleSubmit, isSubmitting }) => (
-          <Form
-            noValidate
-            onSubmit={(e) => handleSubmit(e)}
-            className={classes.form}
-          >
-            <FormControl margin="normal" required fullWidth>
-              <FormikTextField
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Email"
-                autoComplete="email"
-                required
-              />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <FormikTextField
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Password"
-                autoComplete="password"
-                required
-              />
-            </FormControl>
-            <Box display="flex" justifyContent="center" py={3}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Login
-                {isSubmitting && (
-                  <Box display="flex" alignItems="center" pr={1}>
-                    <CircularProgress
-                      size={16}
-                      thickness={5}
-                      color="inherit"
-                      className={classes.whiteColor}
-                    />
-                  </Box>
-                )}
-              </Button>
-            </Box>
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <Switch>
+      <Route path={`${match.path}/login`} component={Login} />
+      <Route path={`${match.path}/register`} component={Register} />
+      <Route path={`${match.path}/resetpassword`} component={ResetPassword} />
+      <Route path={`${match.path}/changepassword`} component={ChangePassword} />
+      <Redirect to="/" />
+    </Switch>
   );
 };
 
-export default withStores("authStore")(Auth);
+export default Auth;
