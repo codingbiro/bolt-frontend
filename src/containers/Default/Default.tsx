@@ -82,6 +82,18 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
               <Link to="/" className={cn(classes.margin, classes.inline)}>
                 <Typography>Home</Typography>
               </Link>
+              <Link
+                to="/products"
+                className={cn(classes.margin, classes.inline)}
+              >
+                <Typography>Products</Typography>
+              </Link>
+              <Link
+                to="/products/add"
+                className={cn(classes.margin, classes.inline)}
+              >
+                <Typography>Add Products</Typography>
+              </Link>
               <div
                 onClick={() => {
                   authStore.logout(client);
@@ -110,6 +122,12 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
             <div>
               <Link to="/" className={cn(classes.margin, classes.inline)}>
                 <Typography>Home</Typography>
+              </Link>
+              <Link
+                to="/products"
+                className={cn(classes.margin, classes.inline)}
+              >
+                <Typography>Products</Typography>
               </Link>
               <Link
                 to="/auth/login"

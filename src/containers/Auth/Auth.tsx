@@ -6,8 +6,6 @@ import Login from "./Login";
 import Register from "./Register";
 
 const Auth: React.FC<RouteComponentProps> = ({ match }) => {
-  // const [mutateRegister] = useMutation<Register, RegisterVariables>(LOGIN);
-
   return (
     <Switch>
       <Route path={`${match.path}/login`} component={Login} />

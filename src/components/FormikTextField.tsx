@@ -90,7 +90,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type Props = Omit<TextFieldProps, "name"> & {
+export type Props = Omit<Omit<TextFieldProps, "onChange">, "name"> & {
   name: string;
   value?: string;
   onChange?: (value: string) => void;
