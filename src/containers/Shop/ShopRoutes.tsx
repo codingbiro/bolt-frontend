@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router";
 import Products from "./Products";
 import urls from "../../const/urls";
 
-const ProductRoutes: React.FC = () => (
+const ShopRoutes: React.FC = () => (
   <Switch>
     <Route path={urls.shop.root} component={Products} />
     <Route path={urls.shop.products} component={Products} />
@@ -12,4 +12,4 @@ const ProductRoutes: React.FC = () => (
   </Switch>
 );
 
-export default ProductRoutes;
+export default ShopRoutes;

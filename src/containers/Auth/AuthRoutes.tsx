@@ -6,7 +6,7 @@ import Login from "./Login";
 import Register from "./Register";
 import urls from "../../const/urls";
 
-const Auth: React.FC = () => {
+const AuthRoutes: React.FC = () => {
   return (
     <Switch>
       <Route path={urls.auth.login} component={Login} />
@@ -18,4 +18,4 @@ const Auth: React.FC = () => {
   );
 };
 
-export default Auth;
+export default AuthRoutes;

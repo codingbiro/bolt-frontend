@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, makeStyles } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import cn from "classnames";
 import { User } from "../../stores/AuthStore";
 import urls from "../../const/urls";
@@ -11,6 +11,12 @@ const useStyles = makeStyles(() => ({
   },
   inline: {
     display: "inline-block",
+  },
+  navLink: {
+    display: "inline-block",
+    "&.active": {
+      color: "red!important",
+    },
   },
   header: {
     display: "grid",
@@ -36,22 +42,26 @@ const Navbar: React.FC<Props> = ({ user, Logout }) => {
       {user ? (
         <>
           <div>
-            <Link to={urls.home} className={cn(classes.margin, classes.inline)}>
+            <NavLink
+              exact
+              to={urls.home}
+              className={cn(classes.margin, classes.navLink)}
+            >
               <Typography>Home</Typography>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={urls.shop.root}
-              className={cn(classes.margin, classes.inline)}
+              className={cn(classes.margin, classes.navLink)}
             >
               <Typography>Shop</Typography>
-            </Link>
+            </NavLink>
             {user.isAdmin && (
-              <Link
+              <NavLink
                 to={urls.admin.dashboard}
-                className={cn(classes.margin, classes.inline)}
+                className={cn(classes.margin, classes.navLink)}
               >
                 <Typography>Admin</Typography>
-              </Link>
+              </NavLink>
             )}
             <div
               onClick={Logout}
@@ -73,30 +83,34 @@ const Navbar: React.FC<Props> = ({ user, Logout }) => {
       ) : (
         <>
           <div>
-            <Link to={urls.home} className={cn(classes.margin, classes.inline)}>
+            <NavLink
+              exact
+              to={urls.home}
+              className={cn(classes.margin, classes.navLink)}
+            >
               <Typography>Home</Typography>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={urls.shop.root}
-              className={cn(classes.margin, classes.inline)}
+              className={cn(classes.margin, classes.navLink)}
             >
               <Typography>Shop</Typography>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={urls.auth.login}
-              className={cn(classes.margin, classes.inline)}
+              className={cn(classes.margin, classes.navLink)}
             >
               <Typography>Login</Typography>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to={urls.auth.resetpassword}
-              className={cn(classes.margin, classes.inline)}
+              className={cn(classes.margin, classes.navLink)}
             >
               <Typography>Reset Password</Typography>
-            </Link>
-            <Link to={urls.auth.register} className={classes.inline}>
+            </NavLink>
+            <NavLink to={urls.auth.register} className={classes.navLink}>
               <Typography>Register</Typography>
-            </Link>
+            </NavLink>
           </div>
           <div>
             <Typography>Hello, Stranger</Typography>
