@@ -9,12 +9,12 @@ import {
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import FormikTextField from "../../components/FormikTextField";
-import { changepassword } from "./api";
-import useHideNavigation from "../../components/useHideNavigation";
 import { parse as queryStringParse } from "query-string";
 import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import FormikTextField from "../../components/FormikTextField";
+import { changepassword } from "./api";
+import useHideNavigation from "../../components/useHideNavigation";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -44,11 +44,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Form {
+interface Props {
   password: string;
 }
 
-const validation = Yup.object().shape<Form>({
+const validation = Yup.object().shape<Props>({
   password: Yup.string().required("Please fill out this field."),
 });
 
@@ -64,8 +64,8 @@ const ChangePassword: React.FC = () => {
 
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>{"Set new password"}</h1>
-      <Formik<Form>
+      <h1 className={classes.red}>Set new password</h1>
+      <Formik<Props>
         initialValues={{
           password: "",
         }}

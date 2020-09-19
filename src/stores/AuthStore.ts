@@ -11,6 +11,7 @@ export default class AuthStore {
   // @observer does not work with an initial value of undefined
   // The decorate function works fine and is used at the bottom of this file
   isLoggedIn = false;
+
   user?: User = undefined;
 
   @action.bound

@@ -9,10 +9,10 @@ import {
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { useHistory } from "react-router";
 import FormikTextField from "../../components/FormikTextField";
 import { login } from "./api";
 import { AuthStore, withStores } from "../../stores";
-import { useHistory } from "react-router";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -39,12 +39,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Form {
+interface Props {
   email: string;
   password: string;
 }
 
-const validation = Yup.object().shape<Form>({
+const validation = Yup.object().shape<Props>({
   email: Yup.string().required("Please fill out this field."),
   password: Yup.string().required("Please fill out this field."),
 });
@@ -55,8 +55,8 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   const [error, setError] = useState(false);
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>{"Coca Cola"}</h1>
-      <Formik<Form>
+      <h1 className={classes.red}>Coca Cola</h1>
+      <Formik<Props>
         initialValues={{
           email: "",
           password: "",

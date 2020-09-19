@@ -1,11 +1,11 @@
 import { useObserver } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { AuthStore, useStores, withStores } from "../../stores";
 import { Typography, CircularProgress, makeStyles } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
-import { default as cn } from "classnames";
-import { whoami } from "../Auth/api";
+import cn from "classnames";
 import { useApolloClient } from "@apollo/client";
+import { whoami } from "../Auth/api";
+import { AuthStore, useStores, withStores } from "../../stores";
 
 const useStyles = makeStyles(() => ({
   margin: {
@@ -88,12 +88,21 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
                   history.push("/");
                 }}
                 className={cn(classes.pointer, classes.inline)}
+                role="button"
+                tabIndex={0}
+                onKeyPress={() => {
+                  authStore.logout(client);
+                  history.push("/");
+                }}
               >
                 <Typography>Logout</Typography>
               </div>
             </div>
             <div>
-              <Typography>Hello, {user.email}</Typography>
+              <Typography>
+                Hello,
+                {user.email}
+              </Typography>
             </div>
           </header>
         ) : (

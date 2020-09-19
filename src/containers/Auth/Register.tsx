@@ -11,7 +11,6 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikTextField from "../../components/FormikTextField";
 import { register } from "./api";
-import { AuthStore, withStores } from "../../stores";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -39,25 +38,25 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Form {
+interface Props {
   email: string;
   name: string;
   password: string;
 }
 
-const validation = Yup.object().shape<Form>({
+const validation = Yup.object().shape<Props>({
   email: Yup.string().required("Please fill out this field."),
   name: Yup.string().required("Please fill out this field."),
   password: Yup.string().required("Please fill out this field."),
 });
 
-const Register: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
+const Register: React.FC = () => {
   const classes = useStyles();
   const [error, setError] = useState(false);
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>{"Redzsiszter"}</h1>
-      <Formik<Form>
+      <h1 className={classes.red}>Redzsiszter</h1>
+      <Formik<Props>
         initialValues={{
           email: "",
           name: "",
@@ -143,4 +142,4 @@ const Register: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   );
 };
 
-export default withStores("authStore")(Register);
+export default Register;

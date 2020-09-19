@@ -10,7 +10,6 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikTextField from "../../components/FormikTextField";
 import { resetpassword } from "./api";
-import { AuthStore, withStores } from "../../stores";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -33,20 +32,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface Form {
+interface Props {
   email: string;
 }
 
-const validation = Yup.object().shape<Form>({
+const validation = Yup.object().shape<Props>({
   email: Yup.string().required("Please fill out this field."),
 });
 
-const ResetPassword: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
+const ResetPassword: React.FC = () => {
   const classes = useStyles();
   return (
     <div className={classes.authContainer}>
-      <h1 className={classes.red}>{"Coca Cola"}</h1>
-      <Formik<Form>
+      <h1 className={classes.red}>Coca Cola</h1>
+      <Formik<Props>
         initialValues={{
           email: "",
         }}
@@ -99,4 +98,4 @@ const ResetPassword: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   );
 };
 
-export default withStores("authStore")(ResetPassword);
+export default ResetPassword;

@@ -4,7 +4,7 @@ import { fade, FormControlLabel, makeStyles } from "@material-ui/core";
 import { useFormikContext } from "formik";
 import cn from "classnames";
 
-function objectPropertyByString<T = any>(
+function objectPropertyByString<T>(
   object: Record<string, unknown>,
   propertyString: string
 ): T | undefined {

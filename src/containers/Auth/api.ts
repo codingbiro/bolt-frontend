@@ -76,6 +76,5 @@ export const changepassword = (token: string, password: string) => {
     token,
     password,
   };
-  console.log(postData);
   return post("auth/changepassword", postData);
 };
