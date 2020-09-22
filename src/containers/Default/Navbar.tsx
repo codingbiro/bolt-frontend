@@ -74,10 +74,7 @@ const Navbar: React.FC<Props> = ({ user, Logout }) => {
             </div>
           </div>
           <div>
-            <Typography>
-              Hello,
-              {user.email}
-            </Typography>
+            <Typography>Hello, {user.email}</Typography>
           </div>
         </>
       ) : (
@@ -113,7 +110,7 @@ const Navbar: React.FC<Props> = ({ user, Logout }) => {
             </NavLink>
           </div>
           <div>
-            <Typography>Hello, Stranger</Typography>
+            <Typography>Bolt Framework</Typography>
           </div>
         </>
       )}

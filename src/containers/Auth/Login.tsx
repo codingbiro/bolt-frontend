@@ -13,9 +13,10 @@ import { useHistory } from "react-router";
 import { useApolloClient } from "@apollo/client";
 import FormikTextField from "../../components/FormikTextField";
 import { login } from "./api";
-import { AuthStore, withStores } from "../../stores";
+import { useStores } from "../../stores";
 import { User, UserVariables } from "../../graphql/types";
 import { USER } from "../../graphql/graphql";
+import FlashMessage from "../../stores/FlashMessage.model";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -52,9 +53,10 @@ const validation = Yup.object().shape<Props>({
   password: Yup.string().required("Please fill out this field."),
 });
 
-const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
+const Login: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const { authStore, contextStore } = useStores();
   const [error, setError] = useState(false);
   const client = useApolloClient();
   return (
@@ -81,6 +83,9 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
                 name: data.user.name,
                 isAdmin: data.user.isAdmin,
               });
+            contextStore.flash(
+              new FlashMessage("login Succeeded", "success", 5000)
+            );
             setSubmitting(false);
             history.push("/");
           } catch (e) {
@@ -147,4 +152,4 @@ const Login: React.FC<{ authStore: AuthStore }> = ({ authStore }) => {
   );
 };
 
-export default withStores("authStore")(Login);
+export default Login;

@@ -4,10 +4,12 @@ import { CircularProgress, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { useApolloClient } from "@apollo/client";
 import { whoami } from "../Auth/api";
-import { AuthStore, useStores, withStores } from "../../stores";
+import { useStores } from "../../stores";
 import Navbar from "./Navbar";
 import { USER } from "../../graphql/graphql";
 import { User, UserVariables } from "../../graphql/types";
+import FlashMessages from "./FlashMessages";
+import FlashMessage from "../../stores/FlashMessage.model";
 
 const useStyles = makeStyles(() => ({
   margin: {
@@ -38,16 +40,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Default: React.FC<{ authStore: AuthStore }> = ({
-  authStore,
-  children,
-}) => {
+const Default: React.FC = ({ children }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { contextStore } = useStores();
+  const { authStore, contextStore } = useStores();
   const isNavigationHidden = useObserver(() => contextStore.isNavigationHidden);
+  const user = useObserver(() => authStore.user);
   const [loading, setLoading] = useState(true);
   const client = useApolloClient();
+
   useEffect(() => {
     async function checkLoginStatus() {
       try {
@@ -73,8 +74,6 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
     checkLoginStatus().then();
   }, [authStore, client]);
 
-  const user = authStore?.user;
-
   if (loading)
     return (
       <div className={classes.center}>
@@ -84,12 +83,16 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
 
   return (
     <div className="App">
+      <FlashMessages />
       <div className={classes.line} />
       {!isNavigationHidden && (
         <Navbar
           user={user}
           Logout={() => {
             authStore.logout(client);
+            contextStore.flash(
+              new FlashMessage("logout successful", "neutral", 5000)
+            );
             history.push("/");
           }}
         />
@@ -99,4 +102,4 @@ const Default: React.FC<{ authStore: AuthStore }> = ({
   );
 };
 
-export default withStores("authStore")(Default);
+export default Default;
