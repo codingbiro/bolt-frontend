@@ -1,4 +1,15 @@
+import sha1 from "sha1";
+
 const apiRoot = "http://localhost:3332/";
+
+// Function creates a new password that is the hash of plaintext password
+// To the backend the hash is the password
+// This makes it harder to detect the plaintext password
+// It does not increase the security for authenticating to the backend
+const hashPassword = (plaintext: string): string => {
+  const salt = "LZXdFTBtTG8d6Z4BffixvRDakEktNxRC";
+  return sha1(salt + plaintext) as string;
+};
 
 function parseJSON(response: Response) {
   if (response.status === 204) {
@@ -44,7 +55,7 @@ function get<T>(url: string): Promise<T> {
 export const login = (email: string, password: string) => {
   const postData = {
     email,
-    password,
+    password: hashPassword(password),
   };
   return post<{ id: string; email: string }>("auth/login", postData);
 };
@@ -59,7 +70,7 @@ export const register = (email: string, name: string, password: string) => {
   const postData = {
     email,
     name,
-    password,
+    password: hashPassword(password),
   };
   return post<{ id: string }>("auth/register", postData);
 };
