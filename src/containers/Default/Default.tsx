@@ -1,6 +1,6 @@
 import { useObserver } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { LinearProgress, makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { useApolloClient } from "@apollo/client";
 import { whoami } from "../Auth/api";
@@ -10,6 +10,7 @@ import { USER } from "../../graphql/graphql";
 import { User, UserVariables } from "../../graphql/types";
 import FlashMessages from "./FlashMessages";
 import FlashMessage from "../../stores/FlashMessage.model";
+import rectLight from "../../assets/rectLight.svg";
 
 const useStyles = makeStyles(() => ({
   margin: {
@@ -26,8 +27,8 @@ const useStyles = makeStyles(() => ({
     padding: "12px 24px",
   },
   line: {
-    height: "6px",
-    backgroundColor: "rgba( 0, 0, 255, 0.85)",
+    height: "4px",
+    backgroundColor: "rgba( 0, 0, 0, 0.8)",
   },
   center: {
     position: "absolute",
@@ -35,8 +36,22 @@ const useStyles = makeStyles(() => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
   },
+  top: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
   pointer: {
     cursor: "pointer",
+  },
+  rectLight: {
+    position: "absolute",
+    bottom: "0",
+    height: "250px",
+    left: 0,
+    right: 0,
+    overflow: "hidden",
   },
 }));
 
@@ -47,6 +62,7 @@ const Default: React.FC = ({ children }) => {
   const isNavigationHidden = useObserver(() => contextStore.isNavigationHidden);
   const user = useObserver(() => authStore.user);
   const [loading, setLoading] = useState(true);
+  const [stillLoading, setStillLoading] = useState(true);
   const client = useApolloClient();
 
   useEffect(() => {
@@ -76,15 +92,21 @@ const Default: React.FC = ({ children }) => {
 
   if (loading)
     return (
-      <div className={classes.center}>
-        <CircularProgress />
+      <div className={classes.top}>
+        <LinearProgress />
       </div>
     );
+
+  setTimeout(() => setStillLoading(false), 1500);
 
   return (
     <div className="App">
       <FlashMessages />
-      <div className={classes.line} />
+      {stillLoading ? (
+        <LinearProgress style={{ backgroundColor: "black" }} />
+      ) : (
+        <div className={classes.line} />
+      )}
       {!isNavigationHidden && (
         <Navbar
           user={user}
@@ -98,6 +120,9 @@ const Default: React.FC = ({ children }) => {
         />
       )}
       <div>{children}</div>
+      <div className={classes.rectLight}>
+        <img src={rectLight} alt="Rect Light" />
+      </div>
     </div>
   );
 };

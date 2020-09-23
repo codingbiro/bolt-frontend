@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { parse as queryStringParse } from "query-string";
 import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import cn from "classnames";
 import FormikTextField from "../../components/FormikTextField";
 import { changepassword } from "./api";
 import useHideNavigation from "../../components/useHideNavigation";
@@ -42,6 +43,12 @@ const useStyles = makeStyles(() => ({
       color: "black",
     },
   },
+  center: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
 }));
 
 interface Props {
@@ -63,8 +70,8 @@ const ChangePassword: React.FC = () => {
   const [error, setError] = useState(false);
 
   return (
-    <div className={classes.authContainer}>
-      <h1 className={classes.red}>Set new password</h1>
+    <div className={cn(classes.authContainer, classes.center)}>
+      <Typography variant="h3">Set new password</Typography>
       <Formik<Props>
         initialValues={{
           password: "",
@@ -104,6 +111,10 @@ const ChangePassword: React.FC = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                style={{
+                  backgroundColor: "rgba(185, 168, 15, 1)",
+                  color: "White",
+                }}
               >
                 Change Password
                 {isSubmitting && (

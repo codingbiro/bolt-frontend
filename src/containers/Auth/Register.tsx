@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import cn from "classnames";
 import FormikTextField from "../../components/FormikTextField";
 import { register } from "./api";
 
@@ -36,6 +37,12 @@ const useStyles = makeStyles(() => ({
     padding: "24px",
     fontWeight: "bold",
   },
+  center: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
 }));
 
 interface Props {
@@ -54,8 +61,8 @@ const Register: React.FC = () => {
   const classes = useStyles();
   const [error, setError] = useState(false);
   return (
-    <div className={classes.authContainer}>
-      <h1 className={classes.red}>Redzsiszter</h1>
+    <div className={cn(classes.authContainer, classes.center)}>
+      <Typography variant="h3">Register</Typography>
       <Formik<Props>
         initialValues={{
           email: "",
@@ -116,6 +123,10 @@ const Register: React.FC = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                style={{
+                  backgroundColor: "rgba(185, 168, 15, 1)",
+                  color: "White",
+                }}
               >
                 Register
                 {isSubmitting && (

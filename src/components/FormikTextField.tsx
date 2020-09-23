@@ -51,14 +51,14 @@ const useStyles = makeStyles(() => ({
     height: "40px",
     width: "100%",
     minWidth: "40px",
-    borderRadius: "16px",
+    borderRadius: "24px",
     "& .MuiInputBase-root, &.MuiInputBase-root": {
       height: "40px",
       "& input": {
         paddingTop: 0,
         paddingBottom: 0,
         height: "40px",
-        borderRadius: "16px",
+        borderRadius: "24px",
         border: 0,
         fontSize: "14",
 
@@ -87,6 +87,13 @@ const useStyles = makeStyles(() => ({
     paddingTop: "8px",
     color: "red",
     fontWeight: "bold",
+  },
+  root: {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderRadius: "24px",
+      },
+    },
   },
 }));
 
@@ -130,6 +137,7 @@ const FormikTextField: React.FC<Props> = ({
           <TextField
             {...propsToPass}
             name={name}
+            classes={{ root: classes.root }}
             value={value}
             required={required}
             variant="outlined"

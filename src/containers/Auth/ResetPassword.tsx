@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
   CircularProgress,
   FormControl,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import cn from "classnames";
 import FormikTextField from "../../components/FormikTextField";
 import { resetpassword } from "./api";
 
@@ -26,9 +28,20 @@ const useStyles = makeStyles(() => ({
     maxWidth: "600px",
     width: "50%",
     margin: "auto",
+    padding: "24px",
   },
   whiteColor: {
     color: "#fff !important",
+  },
+  warning: {
+    color: "orange",
+    padding: "24px",
+  },
+  center: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
 }));
 
@@ -42,16 +55,22 @@ const validation = Yup.object().shape<Props>({
 
 const ResetPassword: React.FC = () => {
   const classes = useStyles();
+  const [submitted, setSubmitted] = useState(false);
   return (
-    <div className={classes.authContainer}>
-      <h1 className={classes.red}>Coca Cola</h1>
+    <div className={cn(classes.authContainer, classes.center)}>
+      <Typography variant="h3">Reset Your Password</Typography>
       <Formik<Props>
         initialValues={{
           email: "",
         }}
         validationSchema={validation}
         onSubmit={async (values, { setSubmitting }) => {
-          await resetpassword(values.email);
+          setSubmitted(false);
+          try {
+            await resetpassword(values.email);
+            // eslint-disable-next-line no-empty
+          } catch (e) {}
+          setSubmitted(true);
           setSubmitting(false);
         }}
       >
@@ -75,7 +94,10 @@ const ResetPassword: React.FC = () => {
               <Button
                 type="submit"
                 variant="contained"
-                color="primary"
+                style={{
+                  backgroundColor: "rgba(185, 168, 15, 1)",
+                  color: "White",
+                }}
                 className={classes.submit}
               >
                 Reset password
@@ -94,6 +116,14 @@ const ResetPassword: React.FC = () => {
           </Form>
         )}
       </Formik>
+      {submitted && (
+        <Box>
+          <Typography className={classes.warning}>
+            We have emailed you the details if the given address is associated
+            with an account.
+          </Typography>
+        </Box>
+      )}
     </div>
   );
 };

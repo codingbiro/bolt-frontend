@@ -11,12 +11,15 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
 import { useApolloClient } from "@apollo/client";
+import cn from "classnames";
+import { NavLink } from "react-router-dom";
 import FormikTextField from "../../components/FormikTextField";
 import { login } from "./api";
 import { useStores } from "../../stores";
 import { User, UserVariables } from "../../graphql/types";
 import { USER } from "../../graphql/graphql";
 import FlashMessage from "../../stores/FlashMessage.model";
+import urls from "../../const/urls";
 
 const useStyles = makeStyles(() => ({
   red: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles(() => ({
   authContainer: {
     maxWidth: "600px",
     width: "50%",
+    padding: "24px",
     margin: "auto",
   },
   whiteColor: {
@@ -39,7 +43,17 @@ const useStyles = makeStyles(() => ({
   },
   error: {
     color: "red",
-    padding: "24px",
+    padding: "16px",
+  },
+  center: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  primary: {
+    color: "rgba(185, 168, 15, 1)",
+    padding: "12px",
   },
 }));
 
@@ -60,8 +74,8 @@ const Login: React.FC = () => {
   const [error, setError] = useState(false);
   const client = useApolloClient();
   return (
-    <div className={classes.authContainer}>
-      <h1 className={classes.red}>Coca Cola</h1>
+    <div className={cn(classes.authContainer, classes.center)}>
+      <Typography variant="h3">Login</Typography>
       <Formik<Props>
         initialValues={{
           email: "",
@@ -126,6 +140,10 @@ const Login: React.FC = () => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                style={{
+                  backgroundColor: "rgba(185, 168, 15, 1)",
+                  color: "White",
+                }}
               >
                 Login
                 {isSubmitting && (
@@ -148,6 +166,11 @@ const Login: React.FC = () => {
           <Typography className={classes.error}>Wrong credentials.</Typography>
         </Box>
       )}
+      <div>
+        <NavLink to={urls.auth.resetpassword} className={classes.primary}>
+          <Typography>Reset Password</Typography>
+        </NavLink>
+      </div>
     </div>
   );
 };

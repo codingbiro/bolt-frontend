@@ -15,12 +15,12 @@ const useStyles = makeStyles(() => ({
   navLink: {
     display: "inline-block",
     "&.active": {
-      color: "red!important",
+      color: "rgba( 0, 0, 0, 1)!important",
     },
   },
   header: {
     display: "grid",
-    backgroundColor: "navy",
+    backgroundColor: "rgba(185, 168, 15, 1)",
     color: "white",
     gridTemplateColumns: "1fr 1fr",
     padding: "12px 24px",
@@ -88,29 +88,17 @@ const Navbar: React.FC<Props> = ({ user, Logout }) => {
               <Typography>Home</Typography>
             </NavLink>
             <NavLink
-              to={urls.shop.root}
-              className={cn(classes.margin, classes.navLink)}
-            >
-              <Typography>Shop</Typography>
-            </NavLink>
-            <NavLink
               to={urls.auth.login}
               className={cn(classes.margin, classes.navLink)}
             >
               <Typography>Login</Typography>
             </NavLink>
-            <NavLink
-              to={urls.auth.resetpassword}
-              className={cn(classes.margin, classes.navLink)}
-            >
-              <Typography>Reset Password</Typography>
-            </NavLink>
             <NavLink to={urls.auth.register} className={classes.navLink}>
-              <Typography>Register</Typography>
+              <Typography style={{ color: "red" }}>Join Now</Typography>
             </NavLink>
           </div>
           <div>
-            <Typography>Bolt Framework</Typography>
+            <Typography>Bolt Framework &copy;</Typography>
           </div>
         </>
       )}

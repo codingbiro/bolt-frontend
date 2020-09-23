@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import "./App.css";
 import { Provider } from "mobx-react";
 import { CssBaseline } from "@material-ui/core";
 import Default from "./containers/Default";
